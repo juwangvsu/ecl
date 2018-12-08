@@ -46,7 +46,6 @@
 class Ekf : public EstimatorInterface
 {
 public:
-
 	Ekf();
 	~Ekf();
 
@@ -185,6 +184,7 @@ public:
 
 	// return a bitmask integer that describes which state estimates can be used for flight control
 	void get_ekf_soln_status(uint16_t *status);
+	static bool dbgflag;
 
 private:
 
@@ -476,3 +476,4 @@ private:
 	void resetWindStates();
 
 };
+//bool Ekf::dbgflag=true;

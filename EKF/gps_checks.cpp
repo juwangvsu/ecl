@@ -59,9 +59,10 @@ bool Ekf::collect_gps(uint64_t time_usec, struct gps_message *gps)
 {
 	// If we have defined the WGS-84 position of the NED origin, run gps quality checks until they pass, then define the origins WGS-84 position using the last GPS fix
 	if (!_NED_origin_initialised) {
+		if (dbgflag) ECL_INFO("EKF collect_gps  NED not initialized");
 		// we have good GPS data so can now set the origin's WGS-84 position
 		if (gps_is_good(gps) && !_NED_origin_initialised) {
-			ECL_INFO("EKF gps is good - setting origin");
+			if (dbgflag) ECL_INFO("EKF gps is good - setting origin");
 			// Set the origin's WGS-84 position to the last gps fix
 			double lat = gps->lat / 1.0e7;
 			double lon = gps->lon / 1.0e7;
@@ -116,8 +117,10 @@ bool Ekf::collect_gps(uint64_t time_usec, struct gps_message *gps)
 */
 bool Ekf::gps_is_good(struct gps_message *gps)
 {
+	if (Ekf::dbgflag==true) ECL_INFO("EKF gps_is_good ?"); //wang hack
 	// Check the fix type
 	_gps_check_fail_status.flags.fix = (gps->fix_type < 3);
+	if (Ekf::dbgflag==true) ECL_INFO("EKF gps_is_good gps->fix_type %d", gps->fix_type);//wang hack
 
 	// Check the number of satellites
 	_gps_check_fail_status.flags.nsats = (gps->nsats < _params.req_nsats);
